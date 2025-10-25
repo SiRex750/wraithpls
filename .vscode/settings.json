@@ -1,0 +1,17 @@
+{
+  "python.defaultInterpreterPath": "${workspaceFolder}/.venv/bin/python",
+  "python.terminal.activateEnvironment": true,
+  "python-envs.pythonProjects": [],
+  // Live Share quality-of-life settings
+  "liveshare.allowGuestDebugControl": true,
+  "liveshare.allowGuestTaskControl": true,
+  "liveshare.features": {
+    "chat": true,
+    "audio": true
+  },
+  // Try to auto-share the local web server on port 8017; if not auto, share manually via the Live Share tab
+  "liveshare.autoShareServers": true,
+  "liveshare.sharedServers": [
+    { "port": 8017, "name": "Wraith Web" }
+  ]
+}
