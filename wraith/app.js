@@ -898,8 +898,29 @@ async function startCamera(){
   }
   els.canvas.width = w;
   els.canvas.height = h;
+  // Update UI
+  try { setState('starting'); } catch(e) {}
+  if(els.msg) els.msg.textContent = 'Starting camera…';
 
-  await initFaceMesh();
+  // Validate globals from MediaPipe
+  if(!(window.FaceMesh && window.FaceMesh.FaceMesh)){
+    if(els.msg) els.msg.textContent = 'Error: MediaPipe Face Mesh library not loaded.';
+    console.error('MediaPipe FaceMesh global not found');
+    return;
+  }
+  if(!(window.Camera)){
+    if(els.msg) els.msg.textContent = 'Error: MediaPipe camera_utils not loaded.';
+    console.error('MediaPipe Camera global not found');
+    return;
+  }
+
+  try {
+    await initFaceMesh();
+  } catch(err){
+    console.error('initFaceMesh failed', err);
+    if(els.msg) els.msg.textContent = `Failed to init FaceMesh: ${String(err)}`;
+    return;
+  }
   initMovementDetection(); // Initialize movement detection on camera start
 
   // Preload CNN if opted in
@@ -918,7 +939,14 @@ async function startCamera(){
     width: w,
     height: h,
   });
-  await camera.start();
+  try {
+    await camera.start();
+  } catch(err){
+    console.error('camera.start() failed', err);
+    if(els.msg) els.msg.textContent = `Camera start failed: ${String(err && err.message || err)}`;
+    setState('error');
+    return;
+  }
   running = true;
   els.startBtn.disabled = true;
   els.stopBtn.disabled = false;
