@@ -78,6 +78,8 @@ const els = {
 
 const ctx = els.canvas.getContext('2d');
 let camera = null; // MediaPipe Camera instance
+let gumStream = null; // Fallback getUserMedia stream
+let rafId = null;    // Fallback rAF loop id
 let fm = null; // FaceMesh
 let running = false;
 let lastTimestamp = 0;
@@ -927,11 +929,7 @@ async function startCamera(){
     console.error('MediaPipe FaceMesh global not found');
     return;
   }
-  if(!(window.Camera)){
-    if(els.msg) els.msg.textContent = 'Error: MediaPipe camera_utils not loaded.';
-    console.error('MediaPipe Camera global not found');
-    return;
-  }
+  // Camera helper is optional; we'll fallback to getUserMedia if missing
 
   try {
     await initFaceMesh();
@@ -950,7 +948,8 @@ async function startCamera(){
   }
 
   // Use MediaPipe's Camera helper to send frames to FaceMesh
-  camera = new Camera(els.video, {
+  if(window.Camera){
+    camera = new Camera(els.video, {
     onFrame: async () => {
       lastTimestamp = performance.now();
       dbg.framesSent++; updateDebugOverlay();
@@ -958,14 +957,18 @@ async function startCamera(){
     },
     width: w,
     height: h,
-  });
-  try {
-    await camera.start();
-  } catch(err){
-    console.error('camera.start() failed', err);
-    if(els.msg) els.msg.textContent = `Camera start failed: ${String(err && err.message || err)}`;
-    setState('error');
-    return;
+    });
+    try {
+      await camera.start();
+    } catch(err){
+      console.warn('camera.start() failed, falling back to getUserMedia', err);
+      await fallbackStartWithGUM({w,h});
+      return finalizeStart();
+    }
+  } else {
+    console.warn('Camera helper missing, using getUserMedia fallback');
+    await fallbackStartWithGUM({w,h});
+    return finalizeStart();
   }
   running = true;
   dbg.started = true; updateDebugOverlay('run');
@@ -983,7 +986,12 @@ async function startCamera(){
 
 function stopCamera(){
   if(!running) return;
-  try{ camera.stop(); }catch(_){ }
+  try{ camera && camera.stop && camera.stop(); }catch(_){ }
+  if(rafId){ cancelAnimationFrame(rafId); rafId = null; }
+  if(gumStream){
+    try{ gumStream.getTracks().forEach(t=>t.stop()); }catch(_){ }
+    gumStream = null;
+  }
   running = false;
   setState('stopped');
   els.startBtn.disabled = false;
@@ -993,6 +1001,36 @@ function stopCamera(){
     if(sirenTimeout){ clearTimeout(sirenTimeout); sirenTimeout = null; }
     if(sirenAudio){ sirenAudio.pause(); try{ sirenAudio.currentTime = 0; }catch(_){ } sirenAudio = null; }
   }catch(_){ }
+}
+
+async function fallbackStartWithGUM({w,h}){
+  try{
+    gumStream = await navigator.mediaDevices.getUserMedia({ video: { width: w, height: h, facingMode: 'user' }, audio: false });
+  }catch(err){
+    console.error('getUserMedia failed', err);
+    if(els.msg) els.msg.textContent = `Camera (getUserMedia) failed: ${String(err && err.message || err)}`;
+    setState('error');
+    throw err;
+  }
+  els.video.srcObject = gumStream;
+  try{ await els.video.play(); }catch(_){ /* Firefox may require user gesture; AWAKEN provides it */ }
+  const loop = async ()=>{
+    if(!running && !rafId) return; // stop guard
+    try{
+      dbg.framesSent++; updateDebugOverlay();
+      await fm.send({ image: els.video });
+    }catch(err){ console.warn('fm.send error (fallback loop)', err); }
+    rafId = requestAnimationFrame(loop);
+  };
+  rafId = requestAnimationFrame(loop);
+}
+
+function finalizeStart(){
+  running = true;
+  dbg.started = true; updateDebugOverlay('run');
+  els.startBtn.disabled = true;
+  els.stopBtn.disabled = false;
+  setState('running');
 }
 
 function onResults(results){
