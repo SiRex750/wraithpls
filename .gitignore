@@ -1,0 +1,17 @@
+# Python venv and caches
+.venv/
+__pycache__/
+*.pyc
+
+# OS/editor
+.DS_Store
+.idea/
+.vscode/*.log
+
+# Data and model artifacts (can be large)
+data/
+model_export/
+wraith/model/
+
+# Archives
+*.zip

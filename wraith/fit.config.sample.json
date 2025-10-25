@@ -1,0 +1,8 @@
+{
+  "clientId": "YOUR_GOOGLE_OAUTH_CLIENT_ID.apps.googleusercontent.com",
+  "redirectUri": "http://localhost:8017/", 
+  "scopes": [
+    "https://www.googleapis.com/auth/fitness.sleep.read",
+    "https://www.googleapis.com/auth/userinfo.profile"
+  ]
+}
