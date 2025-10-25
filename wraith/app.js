@@ -97,6 +97,25 @@ let sirenAudio = null;
 let sirenTimeout = null;
 const SIREN_MAX_MS = 30 * 1000; // 30 seconds max
 
+// --- Lightweight debug overlay ---
+const dbg = { framesSent: 0, results: 0, started: false };
+function ensureDebugOverlay(){
+  let el = document.getElementById('debugStatus');
+  if(!el){
+    el = document.createElement('div');
+    el.id = 'debugStatus';
+    el.style.cssText = 'position:fixed;bottom:12px;left:12px;z-index:9999;background:rgba(0,0,0,0.6);color:#0f0;font:12px/1.3 monospace;padding:8px 10px;border:1px solid rgba(0,255,0,0.4);border-radius:8px;pointer-events:none;';
+    document.body.appendChild(el);
+  }
+  return el;
+}
+function updateDebugOverlay(extra){
+  const el = ensureDebugOverlay();
+  const fmOk = !!(window.FaceMesh && window.FaceMesh.FaceMesh);
+  const camOk = !!window.Camera;
+  el.textContent = `FM:${fmOk?'ok':'no'} CAM:${camOk?'ok':'no'} | started:${dbg.started?'yes':'no'} | frames:${dbg.framesSent} | results:${dbg.results}${extra?` | ${extra}`:''}`;
+}
+
 // Head tilt and skeleton hand settings/state
 let TILT_THRESHOLD_RAD = 0.21; // default ~12°
 let TILT_COOLDOWN_MS = 2500;  // default cooldown
@@ -934,6 +953,7 @@ async function startCamera(){
   camera = new Camera(els.video, {
     onFrame: async () => {
       lastTimestamp = performance.now();
+      dbg.framesSent++; updateDebugOverlay();
       await fm.send({image: els.video});
     },
     width: w,
@@ -948,6 +968,7 @@ async function startCamera(){
     return;
   }
   running = true;
+  dbg.started = true; updateDebugOverlay('run');
   els.startBtn.disabled = true;
   els.stopBtn.disabled = false;
   setState('running');
@@ -975,6 +996,7 @@ function stopCamera(){
 }
 
 function onResults(results){
+  dbg.results++; updateDebugOverlay();
   // Check for alerts (even without face detection)
   checkAndTriggerAlert();
   
@@ -2152,6 +2174,13 @@ els.useGaze?.addEventListener('change', ()=>{
 });
 els.startBtn.addEventListener('click', startCamera);
 els.stopBtn.addEventListener('click', stopCamera);
+
+// Hook video element events for extra diagnostics
+if(els.video){
+  els.video.addEventListener('loadedmetadata', ()=>updateDebugOverlay('metadata'));
+  els.video.addEventListener('play', ()=>updateDebugOverlay('play'));
+  els.video.addEventListener('playing', ()=>updateDebugOverlay('playing'));
+}
 
 // Load model when toggled or on start if checkbox is pre-checked
 els.useCnn?.addEventListener('change', async ()=>{
