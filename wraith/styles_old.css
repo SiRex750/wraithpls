@@ -204,27 +204,11 @@ main {
 .container {
   max-width: 1800px;
   margin: 0 auto;
-  display: -ms-grid;
   display: grid;
-  -ms-grid-columns: 380px 2rem 1fr;
   grid-template-columns: 380px 1fr;
   gap: 2rem;
   align-items: start;
   width: 100%;
-}
-
-/* IE/Edge fallback */
-@supports not (display: grid) {
-  .container {
-    display: flex;
-    flex-wrap: nowrap;
-  }
-  .sidebar {
-    flex: 0 0 380px;
-  }
-  .main-content {
-    flex: 1 1 auto;
-  }
 }
 
 /* ===== SIDEBAR ===== */
@@ -294,127 +278,10 @@ main {
   color: var(--text-primary);
 }
 
-.btn-fullscreen {
-  background: linear-gradient(135deg, #1e90ff, #0066cc);
-  color: #fff;
-  padding: 1rem 1.5rem;
-  font-size: 1.1rem;
-  font-weight: 700;
-  border: none;
-  border-radius: 12px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  box-shadow: 
-    0 4px 15px rgba(30, 144, 255, 0.5),
-    inset 0 -2px 5px rgba(0, 0, 0, 0.3);
-}
-
-.btn-fullscreen:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 
-    0 6px 25px rgba(30, 144, 255, 0.8),
-    inset 0 -2px 5px rgba(0, 0, 0, 0.3);
-}
-
-.btn-fullscreen:active {
-  transform: translateY(0);
-}
-
-.btn-primary:disabled, .btn-secondary:disabled, .btn-fullscreen:disabled {
+.btn-primary:disabled, .btn-secondary:disabled {
   opacity: 0.4;
   cursor: not-allowed;
   transform: none;
-}
-
-/* Fullscreen Mode - Native API Styles */
-body.fullscreen-active {
-  overflow: hidden !important;
-}
-
-/* When video-stage goes fullscreen via native API */
-.video-stage:fullscreen,
-.video-stage:-webkit-full-screen,
-.video-stage:-moz-full-screen,
-.video-stage:-ms-fullscreen {
-  width: 100vw !important;
-  height: 100vh !important;
-  max-width: none !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  background: #000 !important;
-  border: none !important;
-  border-radius: 0 !important;
-  box-shadow: none !important;
-  position: relative !important;
-  overflow: hidden !important;
-}
-
-.video-stage:fullscreen .gothic-frame,
-.video-stage:-webkit-full-screen .gothic-frame,
-.video-stage:-moz-full-screen .gothic-frame,
-.video-stage:-ms-fullscreen .gothic-frame {
-  display: none !important;
-}
-
-.video-stage:fullscreen canvas,
-.video-stage:-webkit-full-screen canvas,
-.video-stage:-moz-full-screen canvas,
-.video-stage:-ms-fullscreen canvas {
-  width: 100vw !important;
-  height: 100vh !important;
-  max-width: 100vw !important;
-  max-height: 100vh !important;
-  object-fit: cover !important;
-  border-radius: 0 !important;
-  position: absolute !important;
-  top: 0 !important;
-  left: 0 !important;
-  margin: 0 !important;
-  padding: 0 !important;
-}
-
-.video-stage:fullscreen video,
-.video-stage:-webkit-full-screen video,
-.video-stage:-moz-full-screen video,
-.video-stage:-ms-fullscreen video {
-  width: 100vw !important;
-  height: 100vh !important;
-  max-width: 100vw !important;
-  max-height: 100vh !important;
-  object-fit: cover !important;
-  position: absolute !important;
-  top: 0 !important;
-  left: 0 !important;
-  margin: 0 !important;
-  padding: 0 !important;
-}
-
-/* Exit fullscreen button overlay */
-.exit-fullscreen-btn {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  z-index: 10000;
-  background: rgba(255, 69, 0, 0.9);
-  color: #fff;
-  padding: 0.8rem 1.5rem;
-  font-size: 1rem;
-  font-weight: 700;
-  border: 2px solid rgba(255, 140, 0, 0.8);
-  border-radius: 12px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  box-shadow: 0 4px 15px rgba(255, 69, 0, 0.5);
-}
-
-.exit-fullscreen-btn:hover {
-  background: rgba(255, 140, 0, 1);
-  transform: scale(1.05);
-  box-shadow: 0 6px 25px rgba(255, 69, 0, 0.8);
 }
 
 .btn-icon {
@@ -621,8 +488,10 @@ input:checked + .slider:before {
 .video-stage {
   position: relative;
   width: 100%;
-  height: 0;
-  padding-bottom: 62.5%; /* 16:10 aspect ratio fallback */
+  /* Prefer modern aspect-ratio, fallback to padding for older browsers */
+  aspect-ratio: 16 / 10;
+  height: auto;
+  padding-bottom: 0; /* ignored when aspect-ratio is supported */
   min-height: 500px;
   background: #000;
   border-radius: 16px;
@@ -637,14 +506,12 @@ input:checked + .slider:before {
   transition: all 0.3s ease;
 }
 
-/* Danger state when drowsy */
 .video-stage.danger {
   border-color: var(--accent-red);
   border-width: 5px;
   animation: dangerPulse 0.5s ease-in-out infinite, screenShake 0.5s ease-in-out infinite;
 }
 
-/* Warning state (eyes closing) */
 .video-stage.warning {
   border-color: #ffaa00;
   border-width: 4px;
@@ -758,7 +625,6 @@ input:checked + .slider:before {
 .corner-bl { bottom: 0; left: 0; }
 .corner-br { bottom: 0; right: 0; }
 
-/* Spider webs and decorations */
 .spiderweb {
   position: absolute;
   font-size: 3rem;
@@ -862,6 +728,7 @@ video, canvas {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  border-radius: 16px; /* match container rounding */
 }
 
 /* ===== STATUS PANEL ===== */
@@ -1101,13 +968,4 @@ footer {
 .glow-red {
   box-shadow: 0 0 30px var(--accent-red);
   animation: dangerPulse 1s infinite;
-}
-
-@keyframes dangerPulse {
-  0%, 100% { 
-    box-shadow: 0 0 30px var(--accent-red);
-  }
-  50% { 
-    box-shadow: 0 0 50px var(--accent-red);
-  }
 }

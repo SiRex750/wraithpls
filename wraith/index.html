@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Wraith Wheels — The Night Watcher</title>
-      <link rel="stylesheet" href="styles.css?v=11">
+  <link rel="stylesheet" href="styles_new.css?v=1">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Inter:wght@300;400;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
@@ -166,173 +166,90 @@
 
       <!-- Main Content -->
       <section class="main-content">
-      <div class="control">
-        <label for="hideDelay">Pumpkin hide delay (sec) <span id="hideDelayVal">0.40</span></label>
-        <input type="range" id="hideDelay" min="0.0" max="2.0" step="0.05" value="0.40" />
-      </div>
-      <div class="control">
-        <label for="tiltThresh">Tilt threshold (deg) <span id="tiltThreshVal">12</span></label>
-        <input type="range" id="tiltThresh" min="5" max="30" step="1" value="12" />
-      </div>
-      <div class="control">
-        <label for="tiltCooldown">Tilt cooldown (sec) <span id="tiltCooldownVal">2.5</span></label>
-        <input type="range" id="tiltCooldown" min="0.5" max="5.0" step="0.1" value="2.5" />
-      </div>
-      <div class="control">
-        <label>
-          <input type="checkbox" id="useGaze" />
-          Detect gaze drift (experimental)
-        </label>
-      </div>
-      <div class="control">
-        <label for="gazeThreshold">Gaze drift threshold <span id="gazeThresholdVal">0.45</span></label>
-        <input type="range" id="gazeThreshold" min="0.20" max="0.80" step="0.01" value="0.45" />
-      </div>
-      <div class="control">
-        <label for="gazeHold">Gaze hold (sec) <span id="gazeHoldVal">1.2</span></label>
-        <input type="range" id="gazeHold" min="0.5" max="3.0" step="0.1" value="1.2" />
-      </div>
-      <div class="control">
-        <label>
-          <input type="checkbox" id="gazeCalibEnable" />
-          Use calibration (center)
-        </label>
-      </div>
-      <div class="control">
-        <button id="gazeCalibrateBtn">Calibrate center (1s)</button>
-      </div>
-      <div class="control">
-        <label for="gazeSigmaK">Calibration sigma × <span id="gazeSigmaKVal">2.0</span></label>
-        <input type="range" id="gazeSigmaK" min="1.0" max="4.0" step="0.1" value="2.0" />
-      </div>
-      <div class="control">
-        <label for="gazeSmoothWin">Gaze smoothing window <span id="gazeSmoothWinVal">5</span></label>
-        <input type="range" id="gazeSmoothWin" min="3" max="15" step="1" value="5" />
-      </div>
-      <div class="control">
-        <label for="yawnThresh">Yawn prob threshold <span id="yawnThreshVal">0.60</span></label>
-        <input type="range" id="yawnThresh" min="0.25" max="0.95" step="0.01" value="0.60" />
-      </div>
-      <div class="control">
-        <label for="yawnCooldown">Yawn cooldown (sec) <span id="yawnCooldownVal">3.0</span></label>
-        <input type="range" id="yawnCooldown" min="1.0" max="10.0" step="0.5" value="3.0" />
-      </div>
-      <div class="control">
-        <label for="yawnMorMin">Yawn min mouth-open (MOR) <span id="yawnMorMinVal">0.35</span></label>
-        <input type="range" id="yawnMorMin" min="0.20" max="0.70" step="0.01" value="0.35" />
-      </div>
-      <div class="control">
-        <label for="yawnMinDur">Yawn min duration (sec) <span id="yawnMinDurVal">0.5</span></label>
-        <input type="range" id="yawnMinDur" min="0.1" max="2.0" step="0.1" value="0.5" />
-      </div>
+        <!-- Video Stage -->
+        <div class="video-stage">
+          <div class="gothic-frame">
+            <div class="frame-corner corner-tl">
+              <svg width="80" height="80" viewBox="0 0 80 80"><path d="M0,20 Q0,0 20,0 L0,0 Z M0,40 L0,80 L10,80 L10,45 Z M20,0 L60,0 L60,10 L25,10 Z" fill="currentColor"/></svg>
+            </div>
+            <div class="frame-corner corner-tr">
+              <svg width="80" height="80" viewBox="0 0 80 80"><path d="M60,0 Q80,0 80,20 L80,0 Z M40,0 L0,0 L0,10 L35,10 Z M80,40 L80,80 L70,80 L70,45 Z" fill="currentColor"/></svg>
+            </div>
+            <div class="frame-corner corner-bl">
+              <svg width="80" height="80" viewBox="0 0 80 80"><path d="M0,60 Q0,80 20,80 L0,80 Z M0,40 L0,0 L10,0 L10,35 Z M20,80 L60,80 L60,70 L25,70 Z" fill="currentColor"/></svg>
+            </div>
+            <div class="frame-corner corner-br">
+              <svg width="80" height="80" viewBox="0 0 80 80"><path d="M60,80 Q80,80 80,60 L80,80 Z M40,80 L0,80 L0,70 L35,70 Z M80,40 L80,0 L70,0 L70,35 Z" fill="currentColor"/></svg>
+            </div>
+            <!-- Spider web decorations -->
+            <div class="spiderweb spiderweb-tl">🕸️</div>
+            <div class="spiderweb spiderweb-tr">🕸️</div>
+            <div class="halloween-icon bat-1">🦇</div>
+            <div class="halloween-icon bat-2">🦇</div>
+            <div class="halloween-icon spider">🕷️</div>
+          </div>
+          <div class="videoWrap">
+            <video id="video" playsinline></video>
+            <canvas id="output"></canvas>
+          </div>
+        </div>
 
-      <hr />
-      <h3>Predictive drowsiness alert (10–20 min)</h3>
-      <div class="control">
-        <label>
-          <input type="checkbox" id="usePredict" />
-          Enable predictive alert
-        </label>
-      </div>
-      <div class="control">
-        <label for="predictThresh">Alert threshold <span id="predictThreshVal">0.65</span></label>
-        <input type="range" id="predictThresh" min="0.50" max="0.95" step="0.01" value="0.65" />
-      </div>
-      <div class="control">
-        <label for="predictWindow">Feature window (sec) <span id="predictWindowVal">120</span></label>
-        <input type="range" id="predictWindow" min="60" max="300" step="10" value="120" />
-      </div>
-      <div class="control">
-        <label>Predicted drowsiness (next ~15m): <span id="predictProb">-</span></label>
-      </div>
-
-      <hr />
-      <h3>Sleep profile (adaptive thresholds)</h3>
-      <div class="control">
-        <label>
-          <input type="checkbox" id="autoAdapt" />
-          Auto-adapt thresholds by sleep profile
-        </label>
-      </div>
-      <div class="control">
-        <label for="idealSleep">Ideal sleep (hrs) <span id="idealSleepVal">7.5</span></label>
-        <input type="range" id="idealSleep" min="5.0" max="9.0" step="0.5" value="7.5" />
-      </div>
-      <div class="control">
-        <label for="lastSleepHours">Last sleep duration (hrs)</label>
-        <input type="number" id="lastSleepHours" min="0" max="14" step="0.25" placeholder="e.g., 6.5" />
-      </div>
-      <div class="control">
-        <label for="sleepImport">Import sleep JSON</label>
-        <input type="file" id="sleepImport" accept="application/json" />
-      </div>
-      <div class="control">
-        <button id="connectGoogleFit" disabled title="Provide OAuth client ID in config to enable">Connect Google Fit (coming soon)</button>
-      </div>
-      <div class="control">
-        <label>Sleep risk factor: <span id="sleepRisk">-</span></label>
-        <button id="resetAdapt">Reset adaptations</button>
-      </div>
-
-      <hr />
-      <h3>🎮 Safety Microgame</h3>
-      <div class="control">
-        <label>Movement: <span id="moveStatus">Unknown</span></label>
-      </div>
-      <div class="control">
-        <label>Drowsiness Score: <span id="drowsyScore">0</span> / 3</label>
-      </div>
-      <div class="control">
-        <label>
-          <input type="checkbox" id="manualStopToggle" />
-          Manual "Stopped" Override (for testing)
-        </label>
-      </div>
-      <div class="control">
-        <small style="color: #888;">System will alert if drowsy while moving, then launch microgame when stopped.</small>
-      </div>
-
-      <hr />
-      <div class="control">
-        <label>
-          <input type="checkbox" id="captureMode" />
-          Dataset capture mode (press n/o/s/y to save crop)
-        </label>
-      </div>
-      <div class="control">
-        <label for="yawnMorMin">Yawn min mouth-open (MOR) <span id="yawnMorMinVal">0.35</span></label>
-        <input type="range" id="yawnMorMin" min="0.20" max="0.70" step="0.01" value="0.35" />
-      </div>
-      <div class="control">
-        <label for="yawnMinDur">Yawn min duration (sec) <span id="yawnMinDurVal">0.5</span></label>
-        <input type="range" id="yawnMinDur" min="0.1" max="2.0" step="0.1" value="0.5" />
-      </div>
-    </section>
-
-    <section class="video-stage">
-      <div class="videoWrap">
-        <video id="video" playsinline></video>
-        <canvas id="output"></canvas>
-      </div>
-      <div class="status">
-        <div>State: <span id="state">idle</span></div>
-        <div>Target face: <span id="targetFace">-</span></div>
-        <div>EAR L/R: <span id="earL">-</span> / <span id="earR">-</span></div>
-  <div>CNN prob L/R: <span id="cnnL">-</span> / <span id="cnnR">-</span></div>
-  <div>Mouth: <span id="mouthPred">-</span></div>
-    <div>Gaze x/y: <span id="gazeX">-</span> / <span id="gazeY">-</span> · Drift: <span id="gazeDrift">off</span></div>
-  <div>Drift hold: <span id="gazeHoldProg">0.0</span>/<span id="gazeHoldTarget">1.2</span>s</div>
-        <div>Closed for: <span id="closedTime">0.0s</span></div>
-  <div>Drowsy count: <span id="drowsyCount">0</span></div>
-        <div id="msg"></div>
-        <div class="hint">Capture mode: Press n/o/s/y to save neutral/open/smile/yawn crop as PNG.</div>
-        <div class="hint">Tip: Click a box or use ←/→ to choose the target face.</div>
-      </div>
-    </section>
+        <!-- Status Panel -->
+        <div class="status-panel">
+          <div class="status-header">
+            <span class="pulse-icon">💀</span>
+            <h3>Vital Signs</h3>
+          </div>
+          <div class="status-grid">
+            <div class="stat-item">
+              <span class="stat-label">State</span>
+              <span id="state" class="stat-value badge-idle">idle</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">Target Face</span>
+              <span id="targetFace" class="stat-value">-</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">EAR Left</span>
+              <span id="earL" class="stat-value mono">-</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">EAR Right</span>
+              <span id="earR" class="stat-value mono">-</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">CNN Left</span>
+              <span id="cnnL" class="stat-value mono">-</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">CNN Right</span>
+              <span id="cnnR" class="stat-value mono">-</span>
+            </div>
+            <div class="stat-item full-width">
+              <span class="stat-label">Mouth State</span>
+              <span id="mouthPred" class="stat-value">-</span>
+            </div>
+            <div class="stat-item full-width">
+              <span class="stat-label">Eyes Closed Duration</span>
+              <span id="closedTime" class="stat-value danger">0.0s</span>
+            </div>
+          </div>
+          <div id="msg" class="alert-message"></div>
+          <div class="hints">
+            <p class="hint">💡 Click face box or use ←/→ to select target</p>
+          </div>
+        </div>
+      </section>
+    </div>
   </main>
 
   <footer>
-    <small>Camera stays on-device. Built with MediaPipe Face Mesh in the browser.</small>
+    <div class="footer-content">
+      <div class="cobweb cobweb-left">🕸️</div>
+      <p>🔒 Camera stays on-device • No data uploaded</p>
+      <p class="tech-stack">Powered by MediaPipe Face Mesh × TensorFlow.js</p>
+      <div class="cobweb cobweb-right">🕸️</div>
+    </div>
   </footer>
 
   <!-- MediaPipe libs (no build needed) -->
