@@ -788,7 +788,7 @@ function boo(){
     }
   }
 }
-}
+
 
 function setState(text){ els.state.textContent = text; }
 
@@ -889,8 +889,12 @@ async function startCamera(){
 
   // Match canvas to displayed size
   const rect = els.video.getBoundingClientRect();
-  const w = Math.floor(rect.width);
-  const h = Math.floor(rect.height);
+  let w = Math.floor(rect.width);
+  let h = Math.floor(rect.height);
+  // Fallback if layout hasn't sized the video yet
+  if(!w || w < 2 || !h || h < 2){
+    w = 640; h = 480;
+  }
   els.canvas.width = w;
   els.canvas.height = h;
 
