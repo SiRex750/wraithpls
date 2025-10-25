@@ -872,7 +872,8 @@ function drawFaceBox(landmarks, index, highlight=false, state='neutral'){
 
 async function initFaceMesh(){
   return new Promise((resolve)=>{
-    fm = new FaceMesh({locateFile: (file)=>`https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/${file}`});
+    // MediaPipe FaceMesh is exposed under the FaceMesh namespace; use FaceMesh.FaceMesh()
+    fm = new FaceMesh.FaceMesh({ locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/${file}` });
     fm.setOptions({
       maxNumFaces: 3,
       refineLandmarks: true,
